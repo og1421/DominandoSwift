@@ -113,28 +113,23 @@ biblioteca.addBooks(book2)
 
 biblioteca.showAvailableBooks()
 
-var aluno1 = User(name: "Orlando")
-var aluno2 = User(name: "Carlos")
-var aluno3 = User(name: "Gabriel")
-
-aluno1.activeUser = true
-aluno2.activeUser = true
-
 let userQueue = DispatchQueue(label: "userQueue", attributes: .concurrent)
 
 userQueue.async {
+    var aluno1 = User(name: "Orlando")
+    aluno1.activeUser = true
     biblioteca.lendBook(title: "O Pequeno Principe", to: &aluno1)
 }
 
 userQueue.async {
+    var aluno2 = User(name: "Carlos")
+    aluno2.activeUser = true
     biblioteca.lendBook(title: "O Pequeno Principe", to: &aluno2)
 }
 
 userQueue.async {
+    var aluno3 = User(name: "Gabriel")
     biblioteca.lendBook(title: "O Pequeno Principe", to: &aluno3)
 }
 
 biblioteca.showAvailableBooks()
-aluno1.showBorrowedBooks()
-aluno2.showBorrowedBooks()
-aluno3.showBorrowedBooks()
