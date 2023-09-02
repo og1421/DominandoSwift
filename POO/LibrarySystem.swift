@@ -17,7 +17,6 @@ class Book {
     let volume: String
     let numberOfPages: Int
     var available: Bool = true
-    
 
     init(name: String, author: String, editora: String, volume: String, numberOfPages: Int) {
         self.title = name
