@@ -17,6 +17,7 @@ class Book {
     let volume: String
     let numberOfPages: Int
     var available: Bool = true
+    var borrowedTo: [UUID]
 
     init(name: String, author: String, editora: String, volume: String, numberOfPages: Int) {
         self.title = name
@@ -41,8 +42,9 @@ class Library {
         queue.sync{
             if let book = self.books[title], user.activeUser, book.available, user.borrowedBooks.count <= 3 {
                 book.available = false
+                book.borrowedTo.append(user.userID)
                 user.borrowedBooks.append(book)
-                
+                 
                 print("Foi emprestado o livro \(book.title) para o usuario \(user.name)")
             } else {
                 print("Não é possivel fazer o emprestimo para \(user.name)")
@@ -69,10 +71,12 @@ class Library {
             return
         }
         
-        if let index = user.borrowedBooks.firstIndex(where: { $0.id == books[title]?.id}){
-            book.available = true
-            user.borrowedBooks.remove(at: index)
-            print("Livro \(title) devolvido por \(user.name)")
+        if let index = user.borrowedBooks.firstIndex(where: { $0.id == books[title]?.id}),  let userIndex = book.borrowedTo.firstIndex(of: user.userID) {
+                book.available = true
+                book.borrowedTo.remove(at: userIndex)
+                user.borrowedBooks.remove(at: index)
+                print("Livro \(title) devolvido por \(user.name)")
+            
         } else {
             print ("Não foi possivel fazer a devolução do livro \(title)")
         }
